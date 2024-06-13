@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using System.Globalization;
 
 namespace Expense_Tracker.Controllers
 {
@@ -19,22 +20,24 @@ namespace Expense_Tracker.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> IndexAsync(DateTime? SelectedDate, String type)
+        public async Task<IActionResult> IndexAsync(string? SelectedYear, string? type)
         {
             var userId = _userManager.GetUserId(User);
             DateTime time= new DateTime(DateTime.Today.Year);
             //DateTime StartDate = new DateTime(DateTime.Today.Year,1, 1);
-			//DateTime EndDate = StartDate.AddYears(1).AddDays(-1);
-
-            if (SelectedDate.HasValue)
+            //DateTime EndDate = StartDate.AddYears(1).AddDays(-1);
+            if(string.IsNullOrEmpty(type))
             {
-                time = new DateTime(SelectedDate.Value.Year);
+                type = "Expense";
+            }
+            if (!string.IsNullOrEmpty(SelectedYear))
+            {
                 //StartDate = new DateTime(SelectedDate.Value.Year, 1, 1);
                 //EndDate = StartDate.AddYears(1).AddDays(-1);
                 List<Transaction> selectedTransactions = await _context.Transactions
                         .Include(x => x.Category)
                         //.Where(y => y.UserId == userId && y.Date >= StartDate && y.Date <= EndDate)
-                        .Where(y => y.UserId == userId && y.Date.Year == SelectedDate.Value.Year)
+                        .Where(y => y.UserId == userId && y.Date.Year.ToString().Equals(SelectedYear))
                         .ToListAsync();
                 if (type == "Expense" || type == "Income")
                 {
@@ -56,11 +59,21 @@ namespace Expense_Tracker.Controllers
                     // Invalid type provided
                     ViewBag.DoughnutChartData = null;
                 }
+                DateTime dt;
+                if (DateTime.TryParseExact(SelectedYear, "yyyy", CultureInfo.InvariantCulture,
+                                          DateTimeStyles.None, out dt))
+                {
+                    Console.WriteLine(dt);
+                }
+                ViewBag.SelectedYear = dt;
 
             }
+            //else
+            //{
+            //    ViewBag.SelectedYear = DateTime.UtcNow;
+            //}
 
 
-            ViewBag.SelectedDate = SelectedDate;
             ViewBag.Type = type;
 
             return View();

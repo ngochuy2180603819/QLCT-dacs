@@ -7,7 +7,7 @@
 <div class="row justify-content-center">
     <div class="widget chart">
         <form id="chartForm" asp-controller="MonthChar" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
                 
                 @if (ViewData["PageTitle"]?.ToString() == "Month chart")
