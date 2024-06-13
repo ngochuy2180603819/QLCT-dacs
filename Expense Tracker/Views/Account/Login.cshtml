@@ -1,0 +1,60 @@
+﻿@model Expense_Tracker.Models.SignInModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <title>Sign in bootstrap</title>
+</head>
+<body>
+    <div class="container">
+        <h4 class="display-4">Log in</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    @* <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
+                        <label class="form-check-label" for="showPassword">Show Password</label>
+                    </div> *@
+                    @* <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                        </label>
+                    </div> *@
+                    <div class="form-group">
+                        <input type="submit" value="Login" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <img class="img-fluid" src="~/login.png" />
+            </div>
+        </div>
+
+        <div>
+            @* <p><a asp-action="ForgotPassword" asp-controller="Account">Forgot password?</a></p> *@
+
+            <p>Click <a asp-action="Signup" asp-controller="Account">here</a> to signup</p>
+        </div>
+    </div>
+
+</body>
+</html>

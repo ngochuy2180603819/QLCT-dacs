@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@{
+    List<Object> menuItems = new List<Object>();
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        menuItems.Add(new
+        {
+            text = "Admin Page",
+            separator = true,
+        });
+        menuItems.Add(new
+        {
+            text = "Admin",
+            url = "/Admin",
+            iconCss = "fa-solid fa-user-tie",
+        });
+    }
+    menuItems.Add(new
+    {
+        text = "General",
+        separator = true,
+    });
+    menuItems.Add(new
+    {
+        text = "Dashboard",
+        url = "/",
+        iconCss = "fa-solid fa-table-columns",
+    });
+    menuItems.Add(new
+    {
+        text = "Categories",
+        url = "/Category",
+        iconCss = "fa-solid fa-folder-closed",
+    });
+    menuItems.Add(new
+    {
+        text = "Transactions",
+        iconCss = "fa-solid fa-arrow-right-arrow-left",
+        url = "/Transaction"
+    });
+
+    menuItems.Add(new
+    {
+        text = "Month/Year",
+        iconCss = "fa-solid fa-chart-pie",
+        url = "/MonthChar"
+    });
+
+    menuItems.Add(new
+    {
+        text = "User",
+        separator = true,
+    });
+    menuItems.Add(new
+    {
+        text = "Account",
+        iconCss = "fa-solid fa-user",
+        url = "/Account"
+    });
+}
+
+<ejs-sidebar id="sidebar" width="290px" enableDock dockSize="100px"
+            target=".dock-target" enableGestures="false">
+    <e-content-template>
+
+        <div class="logo-wrapper">
+            <div class="app-logo">
+                <img src="~/logo.png" />
+            </div>
+            <div class="w-100"></div>
+            <i id="sidebar-toggler" class="fa-solid"></i>
+        </div>
+
+        <div class="profile-wrapper">
+            @{
+                var user = await userManager.GetUserAsync(User);
+                var profilePictureUrl = user?.ProfilePicture ?? Url.Content("~/profile1.jpg");
+            }
+            <img class="profile-pic" src="@profilePictureUrl" alt="" />
+            <div class="titles d-flex flex-column ps-3">
+                <h6 class="mb-0">Expense App</h6>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <span class="text-muted">@user?.FirstName @user?.LastName</span>
+                }
+            </div>
+        </div>
+
+        <ejs-menu id="menu"
+                  items="menuItems"
+                  orientation="Vertical"
+                  hamburgerMode></ejs-menu>
+    </e-content-template>
+</ejs-sidebar>
+
+<script>
+    document.addEventListener('DOMContentLoaded',function (){
+        dockBar = document.getElementById('sidebar').ej2_instances[0];
+        document.getElementById('sidebar-toggler').onclick = function () {
+            dockBar.toggle();
+        };
+    });
+
+</script>

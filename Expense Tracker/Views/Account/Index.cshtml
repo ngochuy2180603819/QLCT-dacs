@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<html>
+<head>
+    <title>Account Page</title>
+    <style>
+        .menu-body a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .user-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btnlogout {
+            margin-left: 10px;
+            position: relative;
+            top: -12px;
+        }
+
+        .btnchangepassword {
+            margin-left: 200px;
+            position: relative;
+            top: -12px;
+        }
+
+    </style>
+</head>
+<body>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        <div class="user-container">
+            <div class="user-info">
+                <p>Hello, @user.FirstName @user.LastName!</p>
+            </div>
+            <div class="btnchangepassword">
+                <form asp-controller="Account" asp-action="ChangePassword" method="get">
+                    <ejs-button id="successbtn" type="submit" cssClass="e-primary" content="Change password"></ejs-button>
+                </form>
+            </div>
+            <div class="btnlogout">
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <ejs-button id="submit" type="submit" content="Log out" cssClass="e-danger"></ejs-button>
+                </form>
+            </div>
+            
+        </div>
+    }
+	
+</body>
+</html>
