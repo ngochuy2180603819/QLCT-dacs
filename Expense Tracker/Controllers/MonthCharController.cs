@@ -26,7 +26,7 @@ namespace Expense_Tracker.Controllers
 
 			if (SelectedDate.HasValue)
 			{
-				System.Console.WriteLine("value" + SelectedDate.Value.ToString());
+				//System.Console.WriteLine("value" + SelectedDate.Value.ToString());
 				StartDate = new DateTime(SelectedDate.Value.Year, SelectedDate.Value.Month, 1);
 				EndDate = StartDate.AddMonths(1).AddDays(-1);
 

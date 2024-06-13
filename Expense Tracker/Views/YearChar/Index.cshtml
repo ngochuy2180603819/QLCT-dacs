@@ -7,12 +7,12 @@
 <div class="row justify-content-center">
     <div class="widget chart">
         <form id="Form" asp-controller="YearChar" method="post">
-            @* <div asp-validation-summary="All" class="text-danger"></div> *@
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="mb-3">
                 
                 @if (ViewData["PageTitle"]?.ToString() == "Year chart")
                 {
-                    <ejs-datepicker id="Selected"
+                    <ejs-datepicker id="SelectedDate"
                                     placeholder="Select Year"
                                     floatLabelType="Always"
                                     format="yyyy"
@@ -33,7 +33,7 @@
         </form>
         <div class="p-4">
             <h5 class="fw-bold" id="SelectedDateDisplay">
-                Selected: @(ViewBag.Type) @(ViewBag.Selected != null ? ((DateTime)ViewBag.Selected).ToString("yyyy") : "None")
+                Selected: @(ViewBag.Type) @(ViewBag.Selected != null ? ((DateTime)ViewBag.SelectedDate).ToString("yyyy") : "None")
             </h5>
         </div>
         <div class="d-flex justify-content-center align-items-center">
@@ -60,7 +60,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('Form');
             const radioButtons = form.querySelectorAll('input[name="Type"]');
-            const datePicker = document.getElementById('Selected');
+            const datePicker = document.getElementById('SelectedDate');
 
             function getCurrentMonthAndYear() {
                 const now = new Date();

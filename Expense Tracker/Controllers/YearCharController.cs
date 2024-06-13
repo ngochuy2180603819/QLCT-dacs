@@ -19,17 +19,22 @@ namespace Expense_Tracker.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> IndexAsync(DateTime? Selected, String type)
+        public async Task<IActionResult> IndexAsync(DateTime? SelectedDate, String type)
         {
             var userId = _userManager.GetUserId(User);
             DateTime time= new DateTime(DateTime.Today.Year);
+            //DateTime StartDate = new DateTime(DateTime.Today.Year,1, 1);
+			//DateTime EndDate = StartDate.AddYears(1).AddDays(-1);
 
-            if (Selected.HasValue)
+            if (SelectedDate.HasValue)
             {
-                time = new DateTime(Selected.Value.Year);
+                time = new DateTime(SelectedDate.Value.Year);
+                //StartDate = new DateTime(SelectedDate.Value.Year, 1, 1);
+                //EndDate = StartDate.AddYears(1).AddDays(-1);
                 List<Transaction> selectedTransactions = await _context.Transactions
                         .Include(x => x.Category)
-                        .Where(y => y.UserId == userId && y.Date.Year == Selected.Value.Year)
+                        //.Where(y => y.UserId == userId && y.Date >= StartDate && y.Date <= EndDate)
+                        .Where(y => y.UserId == userId && y.Date.Year == SelectedDate.Value.Year)
                         .ToListAsync();
                 if (type == "Expense" || type == "Income")
                 {
@@ -55,7 +60,7 @@ namespace Expense_Tracker.Controllers
             }
 
 
-            ViewBag.SelectedDate = Selected;
+            ViewBag.SelectedDate = SelectedDate;
             ViewBag.Type = type;
 
             return View();
